@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibes Coding Guide v3.0</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        gray: {
+                            850: '#1a1a1a',
+                            900: '#111111',
+                            950: '#0a0a0a',
+                        }
+                    },
+                    animation: {
+                        'marquee': 'marquee 25s linear infinite',
+                        'fade-in': 'fadeIn 0.3s ease-out',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Prism Syntax Highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <!-- Smooth Scroll -->
+    <script src="https://unpkg.com/lenis@1.0.42/dist/lenis.min.js"></script>
+
+    <!-- Markdown Parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+        
+        /* Typography overrides */
+        .prose h1 { font-family: 'Inter', sans-serif; font-weight: 600; letter-spacing: -0.05em; margin-bottom: 1.5rem; color: white; }
+        .prose h2 { font-family: 'Inter', sans-serif; font-weight: 500; letter-spacing: -0.03em; margin-top: 2.5rem; margin-bottom: 1rem; color: #e5e5e5; border-bottom: 1px solid #222; padding-bottom: 0.5rem; }
+        .prose h3 { font-family: 'Inter', sans-serif; font-weight: 500; color: #d4d4d4; margin-top: 2rem; }
+        .prose p { margin-bottom: 1.25rem; line-height: 1.7; color: #a3a3a3; }
+        .prose strong { color: white; font-weight: 600; }
+        .prose ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; color: #a3a3a3; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose code { font-family: 'JetBrains Mono', monospace; background: #1a1a1a; padding: 0.2em 0.4em; border-radius: 4px; font-size: 0.9em; color: #e5e5e5; border: 1px solid #333; }
+        .prose pre { background: #111 !important; border: 1px solid #222; border-radius: 8px; margin: 1.5rem 0; }
+        .prose pre code { background: transparent; padding: 0; border: none; color: inherit; }
+        .prose blockquote { border-left: 3px solid #fff; padding-left: 1.5rem; font-style: italic; color: #d4d4d4; background: #111; padding: 1rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
+        .prose table { width: 100%; text-align: left; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9em; }
+        .prose th { border-bottom: 1px solid #333; padding: 0.75rem; color: white; font-weight: 500; }
+        .prose td { border-bottom: 1px solid #222; padding: 0.75rem; color: #a3a3a3; }
+        
+        /* Grid Background */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, #111 1px, transparent 1px),
+                              linear-gradient(to bottom, #111 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+        }
+    </style>
+</head>
+<body class="bg-black text-gray-200 h-screen w-screen overflow-hidden flex flex-col selection:bg-white selection:text-black">
+
+    <!-- Header / Marquee -->
+    <header class="h-12 border-b border-white/10 flex items-center bg-black/50 backdrop-blur-md z-50 overflow-hidden relative">
+        <div class="absolute inset-0 flex items-center whitespace-nowrap animate-marquee font-mono text-xs tracking-widest text-gray-500 uppercase select-none">
+            VIBES CODING GUIDE v3.0 // ARCHITECT YOUR INTENT // SOFTWARE 3.0 // NO HALLUCINATIONS // VIBES CODING GUIDE v3.0 // ARCHITECT YOUR INTENT // SOFTWARE 3.0 // NO HALLUCINATIONS //
+        </div>
+        <div class="absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-black to-transparent z-10"></div>
+        <div class="absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-black to-transparent z-10"></div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden relative">
+        <!-- Background Grid -->
+        <div class="absolute inset-0 bg-grid pointer-events-none z-0 opacity-50"></div>
+
+        <!-- Sidebar -->
+        <aside class="w-64 border-r border-white/10 bg-black/80 backdrop-blur-xl flex flex-col z-20">
+            <div class="p-6 border-b border-white/10">
+                <h1 class="font-bold tracking-tight text-white">VIBES CODING</h1>
+                <p class="text-xs text-gray-500 mt-1 font-mono">Documentation v3.0</p>
+            </div>
+            
+            <nav class="flex-1 overflow-y-auto p-4 space-y-6">
+                <!-- Group 1 -->
+                <div>
+                    <h3 class="text-xs font-mono font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">Start Here</h3>
+                    <ul class="space-y-1">
+                        <li><button onclick="loadDoc('README.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn" data-file="README.md">README</button></li>
+                        <li><button onclick="loadDoc('ARTICLE.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn" data-file="ARTICLE.md">The Manifesto</button></li>
+                    </ul>
+                </div>
+
+                <!-- Group 2 -->
+                <div>
+                    <h3 class="text-xs font-mono font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">The System</h3>
+                    <ul class="space-y-1">
+                        <li><button onclick="loadDoc('AGENT.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn" data-file="AGENT.md">AGENT.md (Router)</button></li>
+                        <li><button onclick="loadDoc('SKILL.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn" data-file="SKILL.md">SKILL.md (Stack)</button></li>
+                        <li><button onclick="loadDoc('PROJECT_STATUS.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn" data-file="PROJECT_STATUS.md">PROJECT_STATUS.md</button></li>
+                    </ul>
+                </div>
+
+                <!-- Group 3 -->
+                <div>
+                    <h3 class="text-xs font-mono font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">SOPs / Control Plane</h3>
+                    <ul class="space-y-1">
+                        <li><button onclick="loadDoc('UI_WORKFLOW.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn" data-file="UI_WORKFLOW.md">UI Workflow</button></li>
+                        <li><button onclick="loadDoc('BACKEND_WORKFLOW.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn" data-file="BACKEND_WORKFLOW.md">Backend Workflow</button></li>
+                        <li><button onclick="loadDoc('DEBUG_WORKFLOW.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn" data-file="DEBUG_WORKFLOW.md">Debug Workflow</button></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="p-4 border-t border-white/10">
+                <a href="#" class="flex items-center gap-2 text-xs text-gray-600 hover:text-white transition-colors">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    System Operational
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto relative z-10" id="main-scroll">
+            <div class="max-w-3xl mx-auto px-8 py-16">
+                <!-- Breadcrumb -->
+                <div class="mb-8 font-mono text-xs text-gray-500" id="breadcrumb">VIBES / README</div>
+                
+                <!-- Markdown Render Target -->
+                <article id="content" class="prose prose-invert max-w-none animate-fade-in pb-20">
+                    <!-- Content injected by JS -->
+                </article>
+            </div>
+        </main>
+    </div>
+
+    <!-- MARKDOWN CONTENT STORAGE (Hidden) -->
+    <script type="text/markdown" id="md-README.md"># 🚀 Vibes Coding Guide (v3.0)
+
+Welcome to the **Vibes Coding Guide**, a comprehensive framework for managing AI coding agents in the "Software 3.0" era. This repository provides the **Context Architecture** needed to minimize hallucinations and maximize developer intent.
+
+## 📂 Directory Structure
+
+This repository is structured as a "Corporate Hierarchy" for AI agents:
+
+```bash
+vibes-coding-guide/
+├── ARTICLE.md              # The Manifesto: "Vibes Coding: The Architect's Manifesto (2026)"
+├── AGENT.md                # The CEO: The main router that directs the AI to the right SOP.
+├── SKILL.md                # The Knowledge Base: The tech stack and core recipes.
+├── PROJECT_STATUS.md       # The Memory: Persistent context of the project's state.
+│
+└── .vibes/                 # The Control Plane (Advanced Architecture)
+    ├── control/            # The Managers: Governance and Safety rules (Placeholders).
+    ├── memory/             # The Archive: Decision logs and immutable facts (Placeholders).
+    └── sop/                # The Workers: Step-by-step Standard Operating Procedures.
+        ├── UI_WORKFLOW.md      # How to build UI (Components, Storybook, Tailwind).
+        ├── BACKEND_WORKFLOW.md # How to build Backend (API, DB, Auth).
+        └── DEBUG_WORKFLOW.md   # How to fix bugs (Reproduction protocol).
+```
+
+## 📄 File Descriptions
+
+### 1. The Core Documents
+
+*   **`ARTICLE.md`**: The full guide explaining the philosophy of "Vibes Coding," the 2026 Tech Stack (Next.js 16, Hono, Drizzle), and the 3 Operational Modes (Plan, Build, Debug). Read this to understand the *Why*.
+*   **`AGENT.md` (The Constitution)**: This is the **System Prompt** for your AI. It defines the "Persona Matrix" (Architect vs. Engineer vs. Detective) and acts as the "Router" that tells the AI which SOP to read based on the task.
+*   **`SKILL.md` (The Tech Stack)**: A rigid definition of your technology stack to prevent the AI from using outdated libraries. It contains "Procedural Recipes" for common tasks like "Database Migration."
+*   **`PROJECT_STATUS.md` (The Context)**: A dynamic file that acts as the AI's "Short-Term Memory." Update this file at the end of every session so the AI knows where it left off.
+
+### 2. The `.vibes/` Control Plane
+
+This directory implements the **OpenAgentsControl** pattern, separating concerns into specialized files.
+
+*   **`.vibes/sop/UI_WORKFLOW.md`**: Strict rules for frontend development (e.g., "No `useEffect` for data fetching", "Use shadcn/ui").
+*   **`.vibes/sop/BACKEND_WORKFLOW.md`**: Strict rules for backend development (e.g., "Validate inputs with Zod", "Use Drizzle for migrations").
+*   **`.vibes/sop/DEBUG_WORKFLOW.md`**: A mandatory protocol for fixing bugs (e.g., "Reproduce the bug with a test case *before* fixing it").
+
+## 🚀 How To Use This
+
+1.  **Copy**: Copy these files into the root of your new project.
+2.  **Instruct**: Tell your AI agent (Cursor, Windsurf, or OpenCode):
+    > "Read `AGENT.md` and `PROJECT_STATUS.md` to start."
+3.  **Vibe**: Focus on defining the *intent* (the vibe) and let the agent handle the implementation using the strict SOPs defined in `.vibes/`.
+
+---
+
+*Generated by [Antigravity](https://google.com) - The AI Coding Assistant.*</script>
+
+    <script type="text/markdown" id="md-ARTICLE.md"># 🚀 Vibes Coding: The 2026 Architect's Manifesto
+
+> *"Coding is no longer about typing syntax. It's about **managing intent**, **curating context**, and **vibrating at the right frequency**."*
+> — Andrej Karpathy (paraphrased), Software 3.0
+
+## 🧠 1. The Paradigm Shift
+
+**You are no longer the bricklayer.** In the "Software 2.0" era, you worried about semicolons and memory management.
+
+In **2026**, the AI is the bricklayer. **You are the Site Manager.**
+
+### Your New Job Description:
+*   **Define the Vibe:** Set the aesthetic, performance, and UX goals.
+*   **Architect the Context:** Feed the *right* files to the AI to prevent hallucinations.
+*   **Review the Work:** Perform "Vibe Checks" on the output.
+
+---
+
+## 🏗️ 2. The Context Architecture
+
+**AI hallucinations are just context failures.** It guesses because it doesn't *know*. You need a rigid file structure to ground the AI.
+
+### 📄 `AGENT.md` (The Constitution)
+**The soul of your agent.** Defines *who* it is and *how* it behaves.
+*   **Role:** "You are a Senior Architect."
+*   **Constraint:** "Never use `any`."
+*   **Behavior:** "If a file is >200 lines, refactor it."
+
+### 📚 `SKILL.md` (The Knowledge Base)
+**The "Legacy Code" killer.** Tells the agent *exactly* which stack to use.
+*   *Rule:* "Use Tailwind v4."
+*   *Rule:* "Use Drizzle ORM."
+*   *Rule:* "Use Hono for API routes."
+
+### 🧠 `PROJECT_STATUS.md` (The Memory)
+**The external hippocampus.** AI has no long-term memory; this file stores it.
+*   **Before you quit:** "Update `PROJECT_STATUS.md` with what we did."
+*   **When you return:** The agent reads this and instantly knows where it left off.
+
+---
+
+## ⚡️ 3. The 3 Operational Modes
+
+**Stop the AI from rushing.** Explicitly switch its "cognitive mode" to match the task.
+
+### 🧠 Mode 1: PLAN (The Architect)
+*   **Goal:** Define the "What" and "Why" before the "How."
+*   **Tooling:** Read-only access + Web Search.
+*   **Prompt:** *"Switch to PLAN MODE. Read `schema.ts`. Outline the DB changes for 'Team Settings' in `plan.md`."*
+
+### 🔨 Mode 2: BUILD (The Engineer)
+*   **Goal:** Execute the plan with high precision.
+*   **Tooling:** Write access, Terminal, Linter.
+*   **Prompt:** *"Switch to BUILD MODE. Execute Step 1 from `plan.md`. Update `schema.ts` and run migrations."*
+
+### 🐛 Mode 3: DEBUG (The Detective)
+*   **Goal:** Fix the vibe when it feels "off."
+*   **Tooling:** Logs, Debugger, MCP (Database Inspection).
+*   **Prompt:** *"Switch to DEBUG MODE. The form isn't saving. Check server logs and DB structure."*
+
+---
+
+## 💻 4. The 2026 Tech Stack
+
+**Why this stack?** Because it "vibes" best with AI reasoning.
+
+| Layer | Technology | Why it Vibes |
+| :--- | :--- | :--- |
+| **Frontend** | **Next.js 16 + Tailwind v4** | **Token Efficiency.** AI understands `flex-center` better than verbose CSS. |
+| **Backend** | **Hono (RPC)** | **Type Safety.** AI cannot hallucinate endpoints; shared types forbid it. |
+| **Database** | **Drizzle ORM** | **Schema-as-Code.** AI reads `schema.ts` and knows your *entire* data model. |
+| **Infra** | **Docker + Coolify** | **Standardization.** AI writes perfect Dockerfiles. |
+
+---
+
+## 🛡️ 5. The Control Plane (Scaling Up)
+
+For large projects, a single prompt isn't enough. You need a **Corporate Hierarchy**.
+
+*   **CEO (`AGENTS.md`)**: The "Router". Sets the mission.
+*   **Managers (`.vibes/control/`)**: Enforce rules (e.g., `SECURITY.md`, `GOVERNANCE.md`).
+*   **Workers (`.vibes/sop/`)**: Step-by-step guides (e.g., `UI_WORKFLOW.md`, `DB_MIGRATION.md`).
+*   **Archive (`.vibes/memory/`)**: Past decisions (e.g., `DECISION_LOG.md`).
+
+---
+
+## 🤖 6. The Model Meta (2026)
+
+**Choose the right brain for the job.**
+
+*   🎨 **Frontend:** **Kimi k2.5** (The Visualist) - "Sees" Figma, outputs Tailwind.
+*   ⚙️ **Logic:** **Claude 3.7 Sonnet** (The Logician) - Lowest hallucination rate.
+*   🏗️ **Refactoring:** **Gemini 3 Pro** (The Librarian) - Infinite context window.
+*   ⚡ **Quick Fixes:** **Llama 4** (The Sprinter) - <100ms latency.
+
+---
+
+> **Final Thought:**
+> The best code in 2026 isn't written. **It's curated.**
+>
+> *Now go vibe.* 🚀</script>
+
+    <script type="text/markdown" id="md-AGENT.md"># 🧠 AI Agent Constitution (v3.0 Control Plane Router)
+
+> **Role:** You are the **Chief Architect (CEO)** of this codebase.
+> **Goal:** Route tasks to the correct specialized SOPs and enforce global governance.
+> **Mode:** Balanced (Prioritize velocity, but never break the build).
+
+## 🚦 Capability Routing (The Control Plane)
+
+**DO NOT** guess. **ALWAYS** read the specific SOP for the task at hand.
+
+-   **If building/modifying UI:**
+    -> READ `.vibes/sop/UI_WORKFLOW.md`
+    -> This defines Component structure, Storybook, and Tailwind rules.
+
+-   **If changing Database/Backend:**
+    -> READ `.vibes/sop/BACKEND_WORKFLOW.md`
+    -> This defines Schema migration, API validation (Zod), and Security rules.
+
+-   **If fixing bugs:**
+    -> READ `.vibes/sop/DEBUG_WORKFLOW.md`
+    -> This defines the "Reproduction First" protocol.
+
+## 🛡️ Global Governance (The Law)
+
+These rules apply to ALL modes and SOPs.
+
+1.  **Atomic Commits:** One feature = One commit.
+2.  **Type Safety:** No `any`. Strict Zod validation on all I/O.
+3.  **No Secrets:** Never commit `.env` or keys.
+
+## 🧠 Cognitive Process (The "Chain of Thought")
+
+1.  **Receive Intent:** "Add a dark mode toggle."
+2.  **Route:** "This is a UI task. I need `.vibes/sop/UI_WORKFLOW.md`."
+3.  **Load Context:** Read the SOP + `SKILL.md` + `globals.css`.
+4.  **Plan:** Create a step-by-step plan based on the SOP.
+5.  **Execute:** Write the code.</script>
+
+    <script type="text/markdown" id="md-SKILL.md"># ⚡️ Tech Stack & Skills (v2.0 Maximized)
+
+## 📦 Core Stack (2026 Standard)
+
+-   **Runtime:** Node.js (LTS) via **npm**
+-   **Framework:** Next.js 16 (App Router, Server Actions)
+-   **Language:** TypeScript 5.x (Strict Mode)
+-   **Database:** PostgreSQL 17 (Neon/Supabase)
+-   **ORM:** Drizzle ORM (Schema-First)
+-   **Auth:** Better Auth v2
+
+## 🎨 Frontend Mastery
+
+-   **Styling:** Tailwind CSS v4 (Use `@theme` variables, no `tailwind.config.js`)
+-   **Components:** shadcn/ui (Radix Primitives)
+-   **Icons:** `lucide-react`
+-   **State:**
+    1.  **URL State:** `nuqs` (Preferred for search/filters)
+    2.  **Server State:** `TanStack Query` (For async data)
+    3.  **Global Client:** `zustand` (Only if absolutely necessary)
+-   **Forms:** `react-hook-form` + `zod` resolver
+
+## 🧪 Testing & Quality
+
+-   **Unit:** `vitest` (Co-located with files: `utils/math.ts` -> `utils/math.test.ts`)
+-   **E2E:** `playwright` (In `/e2e` directory)
+-   **Linting:** `eslint` + `prettier` (Run on save)
+
+## 📂 Directory Structure Enforcement
+
+Enforce this structure to prevent "spaghetti code":
+
+```typescript
+/src
+  /app              # Next.js App Router (Pages & Layouts ONLY)
+    /(auth)         # Route Groups (Login, Register)
+    /dashboard      # Protected Routes
+  /components
+    /ui             # shadcn/ui primitives (Button, Input)
+    /features       # Domain-specific components (AuthForm, UserCard)
+    /layout         # Sidebar, Navbar, Footer
+  /lib
+    db.ts           # Drizzle Client
+    utils.ts        # cn() helper
+  /server
+    /actions        # Server Actions (use 'use server')
+    /db             # Database Schema & Migrations
+  /hooks            # Custom React Hooks
+  /types            # Global TypeScript Definitions
+```
+
+## 🚫 Banned Patterns (Anti-Vibes)
+
+1.  **No `useEffect` for Data Fetching:** Use Server Components or TanStack Query.
+2.  **No Default Exports:** Use named exports (`export const Button = ...`) for better refactoring.
+3.  **No Inline Styles:** Use Tailwind classes.
+4.  **No Relative Imports:** Use aliases (`@/components/ui/button`).
+5.  **No `console.log` in Production:** Use a proper logger or `console.error` for caught exceptions.
+
+## 📝 Code Snippet Standards
+
+### API Route (Hono/Next.js)
+
+```typescript
+import { z } from "zod";
+import { db } from "@/lib/db";
+
+const schema = z.object({ id: z.string() });
+
+export async function POST(req: Request) {
+  const body = await req.json();
+  const parsed = schema.safeParse(body);
+  
+  if (!parsed.success) {
+    return Response.json({ error: "Invalid input" }, { status: 400 });
+  }
+
+  // ... implementation
+}
+```
+
+### Server Action
+
+```typescript
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { db } from "@/lib/db";
+
+export async function createItem(formData: FormData) {
+  // Validate
+  // Mutate
+  // Revalidate
+}
+```</script>
+
+    <script type="text/markdown" id="md-PROJECT_STATUS.md"># 🧠 Project Status & Memory
+
+> **Note to Agent:** Read this file at the start of every session. Update it before you stop.
+
+## 📍 Current Context
+
+-   **Last Action:** [Date/Time] Refactored the `AuthButton` component to use the new `useSession` hook.
+-   **Current Focus:** Implementing the "Dark Mode" toggle across the dashboard.
+-   **Active Branch:** `feature/dark-mode-v2`
+
+## 🚧 Known Issues (The "Fix Later" Pile)
+
+-   [ ] The `UserAvatar` component flickers on initial load (hydration mismatch).
+-   [ ] Database migration `0014_add_teams` failed on staging (needs manual rollback).
+
+## 📋 Next Steps (The Plan)
+
+1.  [x] Install `next-themes`.
+2.  [ ] Create `ThemeToggle.tsx` in `@/components/layout`.
+3.  [ ] Add `suppressHydrationWarning` to `layout.tsx`.
+4.  [ ] Test toggle state persistence in local storage.
+
+## 🧠 Architecture Decisions (Why We Did This)
+
+-   **Why `next-themes`?** Native support for Tailwind v4 `dark:` variant without FOUC.
+-   **Why Hono?** Shared types between FE and BE prevent 40% of runtime errors.</script>
+
+    <script type="text/markdown" id="md-UI_WORKFLOW.md"># 🎨 UI Engineering Workflow
+
+## 🛠️ 1. Component Creation
+
+**Standard:** shadcn/ui + Tailwind v4
+
+1.  **Check:** Does the component exist in `src/components/ui`?
+2.  **Scaffold:** Create `src/components/features/[feature]/[name].tsx`.
+3.  **Props:** Define strict interface (No `any`).
+4.  **Story:** Create `[name].stories.tsx`.
+
+## 🎨 2. Styling Rules
+
+-   Use `flex` and `grid` for layout.
+-   Use `gap-x` and `p-x` tokens.
+-   **Forbidden:** `w-[123px]` (Arbitrary values).
+
+## ⚡️ 3. State Management
+
+-   Use `nuqs` for URL state (search params).
+-   Use `useState` for local interaction.
+-   **Forbidden:** `useEffect` for data fetching.</script>
+
+    <script type="text/markdown" id="md-BACKEND_WORKFLOW.md"># 🛠️ Backend Engineering Workflow
+
+## ⚡️ 1. API Route Creation
+
+**Standard:** Hono / Next.js Route Handlers
+
+1.  **Validator:** Define Zod schema first.
+2.  **Handler:** Implement logic.
+3.  **Error Handling:** Use `try/catch` and return standard error response.
+
+## 🗄️ 2. Database Changes
+
+**Standard:** Drizzle ORM
+
+1.  **Edit:** Modify `schema.ts`.
+2.  **Generate:** `npm run db:generate`.
+3.  **Verify:** Check SQL output.
+4.  **Migrate:** `npm run db:migrate` (Dev only).
+
+## 🛡️ 3. Security
+
+-   **Auth:** Check `session` before any action.
+-   **Sanitization:** Zod handles this automatically.</script>
+
+    <script type="text/markdown" id="md-DEBUG_WORKFLOW.md"># 🛡️ Debugging & Incident Response
+
+## 🔬 1. Reproduction Protocol
+
+**Goal:** Prove the bug exists before fixing it.
+
+1.  **Test Case:** Write a failing test in `tests/repro.test.ts`.
+2.  **Verify:** Run the test to confirm failure.
+
+## 🕵️ 2. Root Cause Analysis
+
+1.  **Logs:** Read server logs.
+2.  **Trace:** Follow the data flow.
+3.  **Hypothesis:** "The issue is caused by X because Y."
+
+## 🔨 3. The Fix
+
+1.  **Implement:** Fix the code.
+2.  **Verify:** Run the repro test (it should pass now).
+3.  **Cleanup:** Remove the repro test or promote it to the regression suite.</script>
+
+    <script>
+        // Init Smooth Scroll
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // Markdown Loading Logic
+        function loadDoc(filename) {
+            const scriptId = `md-${filename}`;
+            const element = document.getElementById(scriptId);
+            
+            if (!element) {
+                console.error(`File not found: ${filename}`);
+                return;
+            }
+
+            const rawMarkdown = element.textContent.trim();
+            const contentDiv = document.getElementById('content');
+            const breadcrumb = document.getElementById('breadcrumb');
+            const mainScroll = document.getElementById('main-scroll');
+
+            // Update Breadcrumb
+            breadcrumb.textContent = `VIBES / ${filename.replace('.md', '')}`;
+
+            // Render Markdown
+            contentDiv.innerHTML = marked.parse(rawMarkdown);
+            
+            // Re-highlight code blocks
+            Prism.highlightAll();
+
+            // Active state styling
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if(btn.dataset.file === filename) {
+                    btn.classList.add('text-white', 'bg-white/10');
+                    btn.classList.remove('text-gray-400');
+                } else {
+                    btn.classList.remove('text-white', 'bg-white/10');
+                    btn.classList.add('text-gray-400');
+                }
+            });
+
+            // Scroll to top
+            mainScroll.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize with README
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDoc('README.md');
+        });
+    </script>
+</body>
+</html>
