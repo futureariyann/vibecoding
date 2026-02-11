@@ -114,7 +114,7 @@
                 position: fixed;
                 left: 0;
                 top: 48px;
-                height: calc(100vh - 48px);
+                height: calc(100vh - 48px - 64px);
                 transform: translateX(-100%);
                 z-index: 30;
                 width: 280px;
@@ -124,11 +124,11 @@
                 transform: translateX(0);
             }
             
-            .mobile-header {
-                display: flex !important;
+            /* Mobile content adjustments - account for bottom nav */
+            main {
+                padding-bottom: 64px;
             }
             
-            /* Mobile content adjustments */
             main > div {
                 padding-left: 1rem;
                 padding-right: 1rem;
@@ -167,6 +167,20 @@
             body.menu-open {
                 overflow: hidden;
             }
+            
+            /* Bottom Navigation Bar */
+            .bottom-nav {
+                display: flex !important;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 64px;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(20px);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                z-index: 40;
+            }
         }
         
         /* Hamburger menu animation */
@@ -191,15 +205,6 @@
 
     <!-- Header / Marquee -->
     <header class="h-12 border-b border-white/10 flex items-center bg-black/50 backdrop-blur-md z-50 overflow-hidden relative">
-        <!-- Mobile Hamburger Menu (Left) -->
-        <button id="menu-toggle" class="mobile-header hidden absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 -ml-2 hamburger" aria-label="Toggle menu" aria-expanded="false">
-            <div class="w-5 h-4 flex flex-col justify-between">
-                <span class="hamburger-line w-full h-0.5 bg-white rounded-full origin-center"></span>
-                <span class="hamburger-line w-full h-0.5 bg-white rounded-full origin-center"></span>
-                <span class="hamburger-line w-full h-0.5 bg-white rounded-full origin-center"></span>
-            </div>
-        </button>
-        
         <!-- Marquee -->
         <div class="absolute inset-0 flex items-center whitespace-nowrap animate-marquee font-mono text-xs tracking-widest text-gray-500 uppercase select-none">
             VIBES CODING GUIDE v3.0 // ARCHITECT YOUR INTENT // SOFTWARE 3.0 // NO HALLUCINATIONS // VIBES CODING GUIDE v3.0 // ARCHITECT YOUR INTENT // SOFTWARE 3.0 // NO HALLUCINATIONS //
@@ -296,6 +301,34 @@
             </div>
         </main>
     </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="bottom-nav hidden md:hidden">
+        <!-- Hamburger Menu Button -->
+        <button id="menu-toggle" class="flex-1 flex items-center justify-center h-full hover:bg-white/5 transition-colors hamburger" aria-label="Toggle menu" aria-expanded="false">
+            <div class="w-5 h-4 flex flex-col justify-between">
+                <span class="hamburger-line w-full h-0.5 bg-white rounded-full origin-center"></span>
+                <span class="hamburger-line w-full h-0.5 bg-white rounded-full origin-center"></span>
+                <span class="hamburger-line w-full h-0.5 bg-white rounded-full origin-center"></span>
+            </div>
+        </button>
+        
+        <!-- Previous Button -->
+        <button id="prev-btn" class="flex-1 flex items-center justify-center h-full hover:bg-white/5 transition-colors border-l border-white/10 disabled:opacity-30 disabled:cursor-not-allowed" aria-label="Previous document">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                <path d="m15 18-6-6 6-6"/>
+            </svg>
+            <span class="ml-2 text-sm text-gray-300">Prev</span>
+        </button>
+        
+        <!-- Next Button -->
+        <button id="next-btn" class="flex-1 flex items-center justify-center h-full hover:bg-white/5 transition-colors border-l border-white/10 disabled:opacity-30 disabled:cursor-not-allowed" aria-label="Next document">
+            <span class="mr-2 text-sm text-gray-300">Next</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300">
+                <path d="m9 18 6-6-6-6"/>
+            </svg>
+        </button>
+    </nav>
 
     <!-- MARKDOWN CONTENT STORAGE (Hidden) -->
     <script type="text/markdown" id="md-README.md"># 🚀 Vibes Coding Guide (v3.0)
@@ -1525,6 +1558,53 @@ export async function createItem(formData: FormData) {
             // Close mobile menu if open
             if (window.innerWidth < 768 && sidebar.classList.contains('open')) {
                 closeMobileMenu();
+            }
+            
+            // Update prev/next button states
+            updateNavButtons(filename);
+        }
+        
+        // Navigation order (same as sidebar)
+        const navOrder = [
+            'README.md',
+            'OVERVIEW.md',
+            'QUICK_START.md',
+            'ARTICLE.md',
+            'PROMPT_ENGINEERING.md',
+            'SECURITY_GUIDE.md',
+            'TROUBLESHOOTING.md',
+            'TEAM_SCALING.md',
+            'MIGRATION_GUIDE.md',
+            'TOOL_STACK.md',
+            'AGENT.md',
+            'SKILL.md',
+            'PROJECT_STATUS.md',
+            'UI_WORKFLOW.md',
+            'BACKEND_WORKFLOW.md',
+            'DEBUG_WORKFLOW.md'
+        ];
+        
+        function updateNavButtons(currentFile) {
+            const currentIndex = navOrder.indexOf(currentFile);
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            if (prevBtn) {
+                prevBtn.disabled = currentIndex <= 0;
+                prevBtn.onclick = () => {
+                    if (currentIndex > 0) {
+                        loadDoc(navOrder[currentIndex - 1]);
+                    }
+                };
+            }
+            
+            if (nextBtn) {
+                nextBtn.disabled = currentIndex >= navOrder.length - 1;
+                nextBtn.onclick = () => {
+                    if (currentIndex < navOrder.length - 1) {
+                        loadDoc(navOrder[currentIndex + 1]);
+                    }
+                };
             }
         }
 
