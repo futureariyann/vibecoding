@@ -1544,8 +1544,20 @@ export async function createItem(formData: FormData) {
                 return;
             }
 
-            // More robust content retrieval
-            const rawMarkdown = element.innerText || element.textContent || "";
+            // More robust content retrieval - use innerHTML for script tags with custom type
+            let rawMarkdown = element.textContent || element.innerText || element.innerHTML || "";
+            
+            // Fallback: if content is empty, try to get it from innerHTML and decode HTML entities
+            if (!rawMarkdown || rawMarkdown.trim() === '') {
+                rawMarkdown = element.innerHTML;
+                if (rawMarkdown) {
+                    // Decode HTML entities
+                    const textarea = document.createElement('textarea');
+                    textarea.innerHTML = rawMarkdown;
+                    rawMarkdown = textarea.value;
+                }
+            }
+            
             const contentDiv = document.getElementById('content');
             const breadcrumb = document.getElementById('breadcrumb');
             const mainScroll = document.getElementById('main-scroll');
@@ -1647,12 +1659,12 @@ export async function createItem(formData: FormData) {
         let lastScrollY = 0;
         const mobileTitleBar = document.getElementById('mobile-title-bar');
         const mobileTitleText = document.getElementById('mobile-title-text');
+        const mainScrollEl = document.getElementById('main-scroll');
         
         function handleMobileScroll() {
             if (window.innerWidth >= 768) return;
             
-            const scrollY = mainScroll.scrollTop;
-            const breadcrumb = document.getElementById('breadcrumb');
+            const scrollY = mainScrollEl.scrollTop;
             
             // Show title bar after scrolling past breadcrumb (around 80px)
             if (scrollY > 80) {
@@ -1665,7 +1677,9 @@ export async function createItem(formData: FormData) {
         }
         
         // Attach scroll listener
-        mainScroll.addEventListener('scroll', handleMobileScroll);
+        if (mainScrollEl) {
+            mainScrollEl.addEventListener('scroll', handleMobileScroll);
+        }
         
         // Update mobile title when loading document
         function updateMobileTitle(filename) {
@@ -1693,11 +1707,29 @@ export async function createItem(formData: FormData) {
         }
 
         // Initialize with README or Hash
-        window.addEventListener('load', () => {
+        function initPage() {
             const initialHash = window.location.hash.replace('#', '');
             const initialFile = initialHash || 'README.md';
-            setTimeout(() => loadDoc(initialFile), 100);
-        });
+            
+            // Try to load immediately
+            loadDoc(initialFile);
+            
+            // Also retry after a short delay to ensure content is ready
+            setTimeout(() => {
+                const contentDiv = document.getElementById('content');
+                if (!contentDiv || contentDiv.innerHTML.trim() === '' || contentDiv.innerHTML.includes('Content injected by JS')) {
+                    console.log('Retrying content load...');
+                    loadDoc(initialFile);
+                }
+            }, 300);
+        }
+        
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPage);
+        } else {
+            initPage();
+        }
 
         // Handle back/forward navigation
         window.addEventListener('hashchange', () => {
