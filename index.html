@@ -116,6 +116,7 @@
                     <h3 class="text-xs font-mono font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">Getting Started</h3>
                     <ul class="space-y-1">
                         <li><button onclick="loadDoc('README.md')" data-file="README.md" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">Introduction</button></li>
+                        <li><button onclick="loadDoc('OVERVIEW.md')" data-file="OVERVIEW.md" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">Project Overview</button></li>
                         <li><button onclick="loadDoc('QUICK_START.md')" data-file="QUICK_START.md" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">Quick Start Guide</button></li>
                         <li><button onclick="loadDoc('ARTICLE.md')" data-file="ARTICLE.md" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">The Manifesto</button></li>
                     </ul>
@@ -196,6 +197,7 @@ This repository is structured as a "Corporate Hierarchy" for AI agents:
 ```bash
 vibes-coding-guide/
 ├── ARTICLE.md              # The Manifesto: "Vibes Coding: The Architect's Manifesto (2026)"
+├── OVERVIEW.md             # 🆕 Real-world case study: Coolykos Kost Management
 ├── QUICK_START.md          # 🆕 Get running in 30 minutes.
 ├── PROMPT_ENGINEERING.md    # 🆕 Master the art of prompting.
 ├── SECURITY_GUIDE.md       # 🆕 Stay safe in the AI era.
@@ -207,7 +209,7 @@ vibes-coding-guide/
 ├── SKILL.md                # The Knowledge Base: The tech stack and core recipes.
 ├── PROJECT_STATUS.md       # The Memory: Persistent context of the project's state.
 │
-└── .vibes/                 # The Control Plane (Advanced Architecture)
+└── .agent/                 # The Control Plane (Advanced Architecture)
     ├── control/            # The Managers: Governance and Safety rules (Placeholders).
     ├── memory/             # The Archive: Decision logs and immutable facts (Placeholders).
     └── sop/                # The Workers: Step-by-step Standard Operating Procedures.
@@ -221,28 +223,268 @@ vibes-coding-guide/
 ### 1. The Core Documents
 
 *   **`ARTICLE.md`**: The full guide explaining the philosophy of "Vibes Coding," the 2026 Tech Stack (Next.js 16, Hono, Drizzle), and the 3 Operational Modes (Plan, Build, Debug). Read this to understand the *Why*.
+*   **`OVERVIEW.md`**: A real-world case study using Coolykos (Kost Management SaaS) as an example of the ideal AI workspace structure.
 *   **`AGENT.md` (The Constitution)**: This is the **System Prompt** for your AI. It defines the "Persona Matrix" (Architect vs. Engineer vs. Detective) and acts as the "Router" that tells the AI which SOP to read based on the task.
 *   **`SKILL.md` (The Tech Stack)**: A rigid definition of your technology stack to prevent the AI from using outdated libraries. It contains "Procedural Recipes" for common tasks like "Database Migration."
 *   **`PROJECT_STATUS.md` (The Context)**: A dynamic file that acts as the AI's "Short-Term Memory." Update this file at the end of every session so the AI knows where it left off.
 
-### 2. The `.vibes/` Control Plane
+### 2. The `.agent/` Control Plane
 
 This directory implements the **OpenAgentsControl** pattern, separating concerns into specialized files.
 
-*   **`.vibes/sop/UI_WORKFLOW.md`**: Strict rules for frontend development (e.g., "No `useEffect` for data fetching", "Use shadcn/ui").
-*   **`.vibes/sop/BACKEND_WORKFLOW.md`**: Strict rules for backend development (e.g., "Validate inputs with Zod", "Use Drizzle for migrations").
-*   **`.vibes/sop/DEBUG_WORKFLOW.md`**: A mandatory protocol for fixing bugs (e.g., "Reproduce the bug with a test case *before* fixing it").
+*   **`.agent/sop/UI_WORKFLOW.md`**: Strict rules for frontend development (e.g., "No `useEffect` for data fetching", "Use shadcn/ui").
+*   **`.agent/sop/BACKEND_WORKFLOW.md`**: Strict rules for backend development (e.g., "Validate inputs with Zod", "Use Drizzle for migrations").
+*   **`.agent/sop/DEBUG_WORKFLOW.md`**: A mandatory protocol for fixing bugs (e.g., "Reproduce the bug with a test case *before* fixing it").
 
 ## 🚀 How To Use This
 
 1.  **Copy**: Copy these files into the root of your new project.
 2.  **Instruct**: Tell your AI agent (Cursor, Windsurf, or OpenCode):
     > "Read `AGENT.md` and `PROJECT_STATUS.md` to start."
-3.  **Vibe**: Focus on defining the *intent* (the vibe) and let the agent handle the implementation using the strict SOPs defined in `.vibes/`.
+3.  **Vibe**: Focus on defining the *intent* (the vibe) and let the agent handle the implementation using the strict SOPs defined in `.agent/`.
 
 ---
 
 *Generated by [Antigravity](https://google.com) - The AI Coding Assistant.*</script>
+
+    <script type="text/markdown" id="md-OVERVIEW.md"># 📚 Project Overview: The Coolykos Architecture
+
+> A real-world case study of an ideal AI workspace structure for a Kost Management SaaS platform.
+
+---
+
+## 🏢 What is Coolykos?
+
+**Coolykos** is a comprehensive Kost Management SaaS platform designed for property owners and tenants in Indonesia. It represents the ideal structure for a vibe-coded project with multiple user roles, complex workflows, and scalable architecture.
+
+### User Roles
+
+| Role | Description | Access Level |
+| :--- | :--- | :--- |
+| **Penghuni** (Tenant) | End-users who rent rooms | Mobile App + Web Dashboard |
+| **Admin** | Property managers who handle operations | Web Dashboard (Full) |
+| **Owner Property** | Property owners with full control | Web Dashboard (Super Admin) |
+
+---
+
+## 🏗️ Architecture Overview
+
+### Monorepo Structure
+
+```
+coolykos/
+├── apps/
+│   ├── web-tenant/           # Next.js 15 - Tenant-facing web
+│   ├── web-dashboard/        # Next.js 15 - Admin & Owner dashboard
+│   └── mobile/               # Expo + React Native - Tenant mobile app
+│
+├── packages/
+│   ├── database/             # Drizzle schema + migrations (shared)
+│   ├── api/                  # Hono RPC routes (shared types)
+│   └── ui/                   # shadcn/ui components (shared)
+│
+└── .agent/                   # Control Plane
+    ├── AGENT.md              # CEO Router (already at root)
+    ├── SKILL.md              # Tech stack definition (already at root)
+    ├── PROJECT_STATUS.md     # Memory file (already at root)
+    │
+    ├── sop/                  # Standard Operating Procedures
+    │   ├── UI_WORKFLOW.md    # Frontend development rules
+    │   ├── BACKEND_WORKFLOW.md  # API & database rules
+    │   ├── DEBUG_WORKFLOW.md    # Bug fixing protocol
+    │   ├── BILLING_WORKFLOW.md  # Midtrans integration rules
+    │   └── IOT_WORKFLOW.md      # Smart lock & device management
+    │
+    └── memory/               # Immutable facts & decisions
+        ├── DECISION_LOG.md   # Why we chose this stack
+        ├── API_CONTRACTS.md  # API documentation
+        └── MIGRATION_LOG.md  # Database migration history
+```
+
+---
+
+## 🎯 Key Features
+
+### For Tenants (Penghuni)
+- **Room Booking**: Browse and book available kost rooms
+- **Payment Management**: Pay rent via Midtrans integration
+- **Maintenance Requests**: Submit and track repair tickets
+- **Smart Access**: Unlock doors via IoT smart locks
+- **Community Chat**: Connect with other tenants
+
+### For Admins
+- **Tenant Management**: Onboard and manage tenant accounts
+- **Payment Tracking**: Monitor rent payments and send reminders
+- **Room Management**: Update room availability and pricing
+- **Maintenance Dashboard**: Track and assign repair tasks
+- **Reports**: Generate occupancy and financial reports
+
+### For Property Owners
+- **Multi-Property Dashboard**: Manage multiple kost locations
+- **Financial Analytics**: Revenue tracking and expense management
+- **Admin Management**: Assign and manage admin roles
+- **Business Intelligence**: Occupancy rates and market insights
+- **Wholesale Operations**: Manage supply chain for kost amenities
+
+---
+
+## 🛠️ Technology Stack
+
+### Frontend
+| Layer | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Framework** | Next.js 15 (App Router) | Server-first React |
+| **Styling** | Tailwind CSS v4 | Utility-first CSS |
+| **UI Components** | shadcn/ui | Accessible primitives |
+| **State** | Zustand + TanStack Query | Global + Server state |
+| **Forms** | react-hook-form + Zod | Type-safe forms |
+
+### Backend
+| Layer | Technology | Purpose |
+| :--- | :--- | :--- |
+| **API Framework** | Hono (RPC) | Type-safe API routes |
+| **Database** | PostgreSQL | Relational data |
+| **ORM** | Drizzle ORM | Type-safe SQL |
+| **Auth** | Better Auth | Session-based auth |
+| **Payments** | Midtrans | Indonesian payment gateway |
+
+### Mobile
+| Layer | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Framework** | Expo + React Native | Cross-platform mobile |
+| **Navigation** | Expo Router | File-based routing |
+| **State** | Zustand | Global state |
+| **API** | tRPC Client | Type-safe API calls |
+
+### DevOps & Infrastructure
+| Layer | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Containerization** | Docker | Consistent environments |
+| **Orchestration** | Docker Compose | Local development |
+| **Hosting** | Coolify / VPS | Self-hosted deployment |
+| **CI/CD** | GitHub Actions | Automated testing & deploy |
+| **Monitoring** | Sentry | Error tracking |
+
+### IoT (Smart Locks)
+| Component | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Firmware** | ESP32 + Arduino | Smart lock hardware |
+| **Protocol** | MQTT | Device communication |
+| **Backend** | Node.js + MQTT Broker | Device management |
+| **Mobile** | React Native BLE | Local device control |
+
+---
+
+## 📂 The .agent/ Directory in Detail
+
+The `.agent/` directory is the **Control Plane** that makes vibe coding possible at scale.
+
+### SOPs (Standard Operating Procedures)
+
+Each SOP is a specialized instruction set for specific domains:
+
+1. **UI_WORKFLOW.md**: How to build consistent UI
+   - Component naming conventions
+   - Tailwind class ordering
+   - Accessibility requirements
+   - Responsive design breakpoints
+
+2. **BACKEND_WORKFLOW.md**: How to build robust APIs
+   - Zod schema patterns
+   - Error handling standards
+   - Database migration protocols
+   - Rate limiting rules
+
+3. **DEBUG_WORKFLOW.md**: How to fix bugs systematically
+   - Reproduction requirements
+   - Root cause analysis template
+   - Testing before fixing rule
+
+4. **BILLING_WORKFLOW.md**: Midtrans integration specifics
+   - Payment flow states
+   - Webhook handling
+   - Idempotency requirements
+   - Receipt generation
+
+5. **IOT_WORKFLOW.md**: Smart device management
+   - Device pairing protocol
+   - MQTT topic structure
+   - Security key rotation
+   - Firmware OTA updates
+
+### Memory (Immutable Facts)
+
+These files record decisions that won't change:
+
+- **DECISION_LOG.md**: Why we chose Next.js over Nuxt, Drizzle over Prisma, etc.
+- **API_CONTRACTS.md**: Documented API endpoints with examples
+- **MIGRATION_LOG.md**: Every database change with rollback instructions
+
+---
+
+## 🔄 The Vibe Coding Workflow
+
+Here's how an AI agent would work on Coolykos:
+
+### Scenario: Adding a New Payment Method
+
+1. **CEO (AGENT.md) reads the intent**: "Add DANA e-wallet payment option"
+
+2. **Router directs to BILLING_WORKFLOW.md**: The AGENT.md recognizes this as a billing task
+
+3. **AI reads SKILL.md**: Confirms Midtrans is our payment provider
+
+4. **AI reads PROJECT_STATUS.md**: Sees we're on branch `feature/dana-payment`
+
+5. **AI executes BILLING_WORKFLOW.md**:
+   - Checks existing payment methods in `packages/api/src/routes/payments.ts`
+   - Adds DANA to the Midtrans configuration
+   - Updates the payment UI in `apps/web-dashboard/components/payments/`
+   - Writes tests following the workflow rules
+
+6. **AI updates PROJECT_STATUS.md**: Records what was done and what's next
+
+---
+
+## 🎓 Lessons from Coolykos
+
+### What Works
+
+1. **Strict Interface Contracts**: Hono RPC ensures the AI can't break API contracts
+2. **Shared Packages**: Database schema in `packages/database` prevents drift
+3. **SOP Specialization**: Separate workflows for UI, Backend, and Billing
+4. **Immutable Memory**: Decision logs prevent the AI from second-guessing past choices
+
+### Challenges Faced
+
+1. **IoT Complexity**: Smart locks required custom SOPs for hardware-specific logic
+2. **Payment Security**: Midtrans integration needed extra security rules
+3. **Multi-Tenancy**: Supporting multiple property owners required careful database design
+
+### Best Practices Derived
+
+1. **One Role, One SOP**: Don't mix concerns in SOPs
+2. **Document the "Why"**: Decision logs save hours of re-debate
+3. **Shared Packages Rule**: Monorepo structure with shared types is essential
+4. **Test in SOPs**: Every SOP should mandate test writing
+
+---
+
+## 🚀 Getting Started with Your Own Project
+
+Want to structure your project like Coolykos?
+
+1. **Copy the Structure**: Use the monorepo layout above
+2. **Write Your SOPs**: Start with UI_WORKFLOW.md and BACKEND_WORKFLOW.md
+3. **Define Your SKILL.md**: Lock in your tech stack
+4. **Create AGENT.md**: Define your AI's persona and routing rules
+5. **Update PROJECT_STATUS.md**: Keep it current before every session
+
+---
+
+> **Remember**: The goal isn't to copy Coolykos exactly. The goal is to create a **Control Plane** that constrains your AI agents to your specific domain and quality standards.
+
+*Happy Vibe Coding!* 🚀</script>
 
     <script type="text/markdown" id="md-QUICK_START.md"># 🚀 Quick Start: Your First Vibe Coding Project
 
@@ -476,9 +718,9 @@ Scaling vibe coding to a team requires more than just sharing a repo. It require
 For large-scale projects, we structure our context files like a company:
 
 -   **CEO (`AGENT.md`)**: The main "Router". It sets the mission and directs the AI to specific SOPs.
--   **Managers (`.vibes/control/`)**: Specialized rules for Security, UI, and Backend.
--   **Workers (`.vibes/sop/`)**: Step-by-step Standard Operating Procedures for specific tasks.
--   **Archive (`.vibes/memory/`)**: Immutable facts, tech stack decisions, and past lessons.
+-   **Managers (`.agent/control/`)**: Specialized rules for Security, UI, and Backend.
+-   **Workers (`.agent/sop/`)**: Step-by-step Standard Operating Procedures for specific tasks.
+-   **Archive (`.agent/memory/`)**: Immutable facts, tech stack decisions, and past lessons.
 
 ---
 
@@ -496,7 +738,7 @@ AI can be messy with commits. Follow this protocol to keep your history clean:
 
 ### Shared vs. Personal Rules
 -   **`AGENT.md`**: Should be committed to Git. This contains the "Team Rules".
--   **`.vibes/local.md`**: (Optional) Put your personal shortcuts here and add it to `.gitignore`.
+-   **`.agent/local.md`**: (Optional) Put your personal shortcuts here and add it to `.gitignore`.
 
 ### Code Review Checklist for AI Code
 When reviewing an AI-generated PR, look for:
@@ -785,9 +1027,9 @@ In 2026, the **Model Context Protocol (MCP)** allows your AI to "touch" the real
 For large projects, a single prompt isn't enough. You need a **Corporate Hierarchy**.
 
 *   **CEO (`AGENTS.md`)**: The "Router". Sets the mission.
-*   **Managers (`.vibes/control/`)**: Enforce rules (e.g., `SECURITY.md`, `GOVERNANCE.md`).
-*   **Workers (`.vibes/sop/`)**: Step-by-step guides (e.g., `UI_WORKFLOW.md`, `DB_MIGRATION.md`).
-*   **Archive (`.vibes/memory/`)**: Past decisions (e.g., `DECISION_LOG.md`).
+*   **Managers (`.agent/control/`)**: Enforce rules (e.g., `SECURITY.md`, `GOVERNANCE.md`).
+*   **Workers (`.agent/sop/`)**: Step-by-step guides (e.g., `UI_WORKFLOW.md`, `DB_MIGRATION.md`).
+*   **Archive (`.agent/memory/`)**: Past decisions (e.g., `DECISION_LOG.md`).
 
 ---
 
@@ -818,15 +1060,15 @@ For large projects, a single prompt isn't enough. You need a **Corporate Hierarc
 **DO NOT** guess. **ALWAYS** read the specific SOP for the task at hand.
 
 -   **If building/modifying UI:**
-    -> READ `.vibes/sop/UI_WORKFLOW.md`
+    -> READ `.agent/sop/UI_WORKFLOW.md`
     -> This defines Component structure, Storybook, and Tailwind rules.
 
 -   **If changing Database/Backend:**
-    -> READ `.vibes/sop/BACKEND_WORKFLOW.md`
+    -> READ `.agent/sop/BACKEND_WORKFLOW.md`
     -> This defines Schema migration, API validation (Zod), and Security rules.
 
 -   **If fixing bugs:**
-    -> READ `.vibes/sop/DEBUG_WORKFLOW.md`
+    -> READ `.agent/sop/DEBUG_WORKFLOW.md`
     -> This defines the "Reproduction First" protocol.
 
 ## 🛡️ Global Governance (The Law)
@@ -840,7 +1082,7 @@ These rules apply to ALL modes and SOPs.
 ## 🧠 Cognitive Process (The "Chain of Thought")
 
 1.  **Receive Intent:** "Add a dark mode toggle."
-2.  **Route:** "This is a UI task. I need `.vibes/sop/UI_WORKFLOW.md`."
+2.  **Route:** "This is a UI task. I need `.agent/sop/UI_WORKFLOW.md`."
 3.  **Load Context:** Read the SOP + `SKILL.md` + `globals.css`.
 4.  **Plan:** Create a step-by-step plan based on the SOP.
 5.  **Execute:** Write the code.</script>
