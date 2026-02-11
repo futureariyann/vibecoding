@@ -181,6 +181,26 @@
                 border-top: 1px solid rgba(255, 255, 255, 0.1);
                 z-index: 40;
             }
+            
+            /* Mobile Sticky Title Bar */
+            .mobile-title-bar {
+                display: block !important;
+                position: fixed;
+                top: calc(48px + env(safe-area-inset-top));
+                left: 0;
+                right: 0;
+                height: 44px;
+                background: rgba(17, 17, 17, 0.95);
+                backdrop-filter: blur(20px);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                z-index: 45;
+                transform: translateY(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .mobile-title-bar.visible {
+                transform: translateY(0);
+            }
         }
         
         /* Menu icon toggle */
@@ -215,6 +235,11 @@
 
     <!-- Mobile Overlay -->
     <div id="sidebar-overlay" class="sidebar-overlay md:hidden" onclick="closeMobileMenu()"></div>
+
+    <!-- Mobile Sticky Title Bar (shows when scrolling) -->
+    <div id="mobile-title-bar" class="mobile-title-bar hidden md:hidden flex items-center justify-center">
+        <span id="mobile-title-text" class="text-sm font-medium text-white truncate px-4">VIBES CODING</span>
+    </div>
 
     <div class="flex flex-1 overflow-hidden relative">
         <!-- Background Grid -->
@@ -1569,6 +1594,9 @@ export async function createItem(formData: FormData) {
             
             // Update prev/next button states
             updateNavButtons(filename);
+            
+            // Update mobile title bar
+            updateMobileTitle(filename);
         }
         
         // Navigation order (same as sidebar)
@@ -1612,6 +1640,55 @@ export async function createItem(formData: FormData) {
                         loadDoc(navOrder[currentIndex + 1]);
                     }
                 };
+            }
+        }
+
+        // Mobile scroll handler for sticky title bar
+        let lastScrollY = 0;
+        const mobileTitleBar = document.getElementById('mobile-title-bar');
+        const mobileTitleText = document.getElementById('mobile-title-text');
+        
+        function handleMobileScroll() {
+            if (window.innerWidth >= 768) return;
+            
+            const scrollY = mainScroll.scrollTop;
+            const breadcrumb = document.getElementById('breadcrumb');
+            
+            // Show title bar after scrolling past breadcrumb (around 80px)
+            if (scrollY > 80) {
+                mobileTitleBar.classList.add('visible');
+            } else {
+                mobileTitleBar.classList.remove('visible');
+            }
+            
+            lastScrollY = scrollY;
+        }
+        
+        // Attach scroll listener
+        mainScroll.addEventListener('scroll', handleMobileScroll);
+        
+        // Update mobile title when loading document
+        function updateMobileTitle(filename) {
+            if (mobileTitleText) {
+                const titleMap = {
+                    'README.md': 'Introduction',
+                    'OVERVIEW.md': 'Project Overview',
+                    'QUICK_START.md': 'Quick Start',
+                    'ARTICLE.md': 'The Manifesto',
+                    'PROMPT_ENGINEERING.md': 'Prompt Engineering',
+                    'SECURITY_GUIDE.md': 'Security & Safety',
+                    'TROUBLESHOOTING.md': 'Troubleshooting',
+                    'TEAM_SCALING.md': 'Vibe Coding for Teams',
+                    'MIGRATION_GUIDE.md': 'Migration Guide',
+                    'TOOL_STACK.md': 'The 2026 AI Tool Stack',
+                    'AGENT.md': 'AGENT.md',
+                    'SKILL.md': 'SKILL.md',
+                    'PROJECT_STATUS.md': 'PROJECT_STATUS.md',
+                    'UI_WORKFLOW.md': 'UI Workflow',
+                    'BACKEND_WORKFLOW.md': 'Backend Workflow',
+                    'DEBUG_WORKFLOW.md': 'Debug Workflow'
+                };
+                mobileTitleText.textContent = titleMap[filename] || 'VIBES CODING';
             }
         }
 
