@@ -2,7 +2,7 @@
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Vibes Coding Guide v3.0</title>
     
     <!-- Fonts -->
@@ -113,15 +113,15 @@
             aside {
                 position: fixed;
                 left: 0;
-                top: 48px;
-                height: calc(100vh - 48px - 64px);
+                top: calc(48px + env(safe-area-inset-top));
+                height: calc(100vh - 48px - 64px - env(safe-area-inset-top));
                 transform: translateX(-100%);
-                z-index: 30;
-                width: 280px;
+                z-index: 50 !important;
+                width: 280px !important;
             }
             
             aside.open {
-                transform: translateX(0);
+                transform: translateX(0) !important;
             }
             
             /* Mobile content adjustments - account for bottom nav */
@@ -204,7 +204,7 @@
 <body class="bg-black text-gray-200 h-screen w-screen overflow-hidden flex flex-col selection:bg-white selection:text-black">
 
     <!-- Header / Marquee -->
-    <header class="h-12 border-b border-white/10 flex items-center bg-black/50 backdrop-blur-md z-50 overflow-hidden relative">
+    <header class="h-12 border-b border-white/10 flex items-center bg-black/50 backdrop-blur-md z-50 overflow-hidden relative pt-[env(safe-area-inset-top)]">
         <!-- Marquee -->
         <div class="absolute inset-0 flex items-center whitespace-nowrap animate-marquee font-mono text-xs tracking-widest text-gray-500 uppercase select-none">
             VIBES CODING GUIDE v3.0 // ARCHITECT YOUR INTENT // SOFTWARE 3.0 // NO HALLUCINATIONS // VIBES CODING GUIDE v3.0 // ARCHITECT YOUR INTENT // SOFTWARE 3.0 // NO HALLUCINATIONS //
@@ -303,7 +303,7 @@
     </div>
 
     <!-- Mobile Bottom Navigation -->
-    <nav class="bottom-nav hidden md:hidden">
+    <nav class="bottom-nav md:hidden">
         <!-- Hamburger Menu Button -->
         <button id="menu-toggle" class="flex-1 flex flex-col items-center justify-center h-full hover:bg-white/5 transition-colors hamburger gap-1" aria-label="Toggle menu" aria-expanded="false">
             <!-- Menu Icon (Hamburger) -->
