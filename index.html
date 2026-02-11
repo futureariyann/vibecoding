@@ -183,21 +183,21 @@
             }
         }
         
-        /* Hamburger menu animation */
-        .hamburger-line {
-            transition: transform 0.3s ease, opacity 0.3s ease;
+        /* Menu icon toggle */
+        .menu-icon {
+            display: block;
         }
         
-        .hamburger.active .hamburger-line:nth-child(1) {
-            transform: translateY(6px) rotate(45deg);
+        .close-icon {
+            display: none;
         }
         
-        .hamburger.active .hamburger-line:nth-child(2) {
-            opacity: 0;
+        .hamburger.active .menu-icon {
+            display: none;
         }
         
-        .hamburger.active .hamburger-line:nth-child(3) {
-            transform: translateY(-6px) rotate(-45deg);
+        .hamburger.active .close-icon {
+            display: block;
         }
     </style>
 </head>
@@ -305,12 +305,19 @@
     <!-- Mobile Bottom Navigation -->
     <nav class="bottom-nav hidden md:hidden">
         <!-- Hamburger Menu Button -->
-        <button id="menu-toggle" class="flex-1 flex items-center justify-center h-full hover:bg-white/5 transition-colors hamburger" aria-label="Toggle menu" aria-expanded="false">
-            <div class="w-5 h-4 flex flex-col justify-between">
-                <span class="hamburger-line w-full h-0.5 bg-white rounded-full origin-center"></span>
-                <span class="hamburger-line w-full h-0.5 bg-white rounded-full origin-center"></span>
-                <span class="hamburger-line w-full h-0.5 bg-white rounded-full origin-center"></span>
-            </div>
+        <button id="menu-toggle" class="flex-1 flex flex-col items-center justify-center h-full hover:bg-white/5 transition-colors hamburger gap-1" aria-label="Toggle menu" aria-expanded="false">
+            <!-- Menu Icon (Hamburger) -->
+            <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="4" x2="20" y1="6" y2="6"/>
+                <line x1="4" x2="20" y1="12" y2="12"/>
+                <line x1="4" x2="20" y1="18" y2="18"/>
+            </svg>
+            <!-- Close Icon (X) -->
+            <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6 6 18"/>
+                <path d="m6 6 12 12"/>
+            </svg>
+            <span class="text-[10px] text-gray-400">Menu</span>
         </button>
         
         <!-- Previous Button -->
