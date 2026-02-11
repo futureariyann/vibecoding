@@ -549,22 +549,31 @@ export async function createItem(formData: FormData) {
 
     <script>
         // Init Smooth Scroll
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            direction: 'vertical',
-            gestureDirection: 'vertical',
-            smooth: true,
-            mouseMultiplier: 1,
-            smoothTouch: false,
-            touchMultiplier: 2,
-        });
+        let lenis;
+        try {
+            if (typeof Lenis !== 'undefined') {
+                lenis = new Lenis({
+                    duration: 1.2,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                    direction: 'vertical',
+                    gestureDirection: 'vertical',
+                    smooth: true,
+                    mouseMultiplier: 1,
+                    smoothTouch: false,
+                    touchMultiplier: 2,
+                });
 
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
+                function raf(time) {
+                    lenis.raf(time);
+                    requestAnimationFrame(raf);
+                }
+                requestAnimationFrame(raf);
+            } else {
+                document.documentElement.style.scrollBehavior = 'smooth';
+            }
+        } catch (e) {
+            console.warn("Lenis failed to initialize:", e);
         }
-        requestAnimationFrame(raf);
 
         // Markdown Loading Logic
         function loadDoc(filename) {
@@ -573,10 +582,13 @@ export async function createItem(formData: FormData) {
             
             if (!element) {
                 console.error(`File not found: ${filename}`);
+                // Fallback to README if not found
+                if (filename !== 'README.md') loadDoc('README.md');
                 return;
             }
 
-            const rawMarkdown = element.textContent;
+            // More robust content retrieval
+            const rawMarkdown = element.innerText || element.textContent || "";
             const contentDiv = document.getElementById('content');
             const breadcrumb = document.getElementById('breadcrumb');
             const mainScroll = document.getElementById('main-scroll');
@@ -584,15 +596,22 @@ export async function createItem(formData: FormData) {
             // Update Breadcrumb
             breadcrumb.textContent = `VIBES / ${filename.replace('.md', '')}`;
 
-            // Render Markdown
-            contentDiv.innerHTML = marked.parse(rawMarkdown.trim());
+            // Render Markdown with marked.js check
+            if (typeof marked !== 'undefined') {
+                contentDiv.innerHTML = marked.parse(rawMarkdown.trim());
+            } else {
+                contentDiv.innerHTML = `<pre class="whitespace-pre-wrap font-mono text-sm">${rawMarkdown}</pre>`;
+            }
             
-            // Re-highlight code blocks
-            Prism.highlightAll();
+            // Re-highlight code blocks with Prism check
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
 
             // Active state styling
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                if(btn.getAttribute("data-file") === filename) {
+                const btnFile = btn.getAttribute("data-file");
+                if(btnFile === filename) {
                     btn.classList.add('text-white', 'bg-white/10');
                     btn.classList.remove('text-gray-400');
                 } else {
@@ -602,16 +621,20 @@ export async function createItem(formData: FormData) {
             });
 
             // Update Hash
-            window.location.hash = filename;
+            if (history.pushState) {
+                history.pushState(null, null, '#' + filename);
+            } else {
+                window.location.hash = filename;
+            }
 
             // Scroll to top
-            mainScroll.scrollTo({ top: 0, behavior: 'smooth' });
+            mainScroll.scrollTop = 0;
         }
 
         // Initialize with README or Hash
-        document.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('load', () => {
             const initialFile = window.location.hash.replace('#', '') || 'README.md';
-            loadDoc(initialFile);
+            setTimeout(() => loadDoc(initialFile), 100);
         });
 
         // Handle back/forward navigation
