@@ -60,7 +60,20 @@ In **2026**, the AI is the bricklayer. **You are the Site Manager.**
 
 ---
 
-## 💻 4. The 2026 Tech Stack
+## 🛠️ 4. MCPs & Plugins
+
+In 2026, the **Model Context Protocol (MCP)** allows your AI to "touch" the real world securely.
+
+| Tool / MCP | Purpose | Why it's essential |
+| :--- | :--- | :--- |
+| **PostgreSQL MCP** | **DB Direct Access** | Run real queries to verify data exists. |
+| **Brave Search MCP** | **Live Docs** | Check the latest library syntax in real-time. |
+| **Filesystem MCP** | **Deep Search** | `grep` the entire repo to find definitions instantly. |
+| **GitHub MCP** | **PR Management** | Automate PR summaries and issue linking. |
+
+---
+
+## 💻 5. The 2026 Tech Stack
 
 **Why this stack?** Because it "vibes" best with AI reasoning.
 
@@ -73,7 +86,7 @@ In **2026**, the AI is the bricklayer. **You are the Site Manager.**
 
 ---
 
-## 🛡️ 5. The Control Plane (Scaling Up)
+## 🛡️ 6. The Control Plane (Scaling Up)
 
 For large projects, a single prompt isn't enough. You need a **Corporate Hierarchy**.
 
@@ -84,7 +97,7 @@ For large projects, a single prompt isn't enough. You need a **Corporate Hierarc
 
 ---
 
-## 🤖 6. The Model Meta (2026)
+## 🤖 7. The Model Meta (2026)
 
 **Choose the right brain for the job.**
 
