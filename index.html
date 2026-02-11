@@ -115,8 +115,8 @@
                 <div>
                     <h3 class="text-xs font-mono font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">Start Here</h3>
                     <ul class="space-y-1">
-                        <li><button onclick="loadDoc('README.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn" data-file="README.md">README</button></li>
-                        <li><button onclick="loadDoc('ARTICLE.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn" data-file="ARTICLE.md">The Manifesto</button></li>
+                        <li><button onclick="loadDoc('README.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">README</button></li>
+                        <li><button onclick="loadDoc('ARTICLE.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">The Manifesto</button></li>
                     </ul>
                 </div>
 
@@ -124,9 +124,9 @@
                 <div>
                     <h3 class="text-xs font-mono font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">The System</h3>
                     <ul class="space-y-1">
-                        <li><button onclick="loadDoc('AGENT.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn" data-file="AGENT.md">AGENT.md (Router)</button></li>
-                        <li><button onclick="loadDoc('SKILL.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn" data-file="SKILL.md">SKILL.md (Stack)</button></li>
-                        <li><button onclick="loadDoc('PROJECT_STATUS.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn" data-file="PROJECT_STATUS.md">PROJECT_STATUS.md</button></li>
+                        <li><button onclick="loadDoc('AGENT.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">AGENT.md (Router)</button></li>
+                        <li><button onclick="loadDoc('SKILL.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">SKILL.md (Stack)</button></li>
+                        <li><button onclick="loadDoc('PROJECT_STATUS.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">PROJECT_STATUS.md</button></li>
                     </ul>
                 </div>
 
@@ -134,9 +134,9 @@
                 <div>
                     <h3 class="text-xs font-mono font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">SOPs / Control Plane</h3>
                     <ul class="space-y-1">
-                        <li><button onclick="loadDoc('UI_WORKFLOW.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn" data-file="UI_WORKFLOW.md">UI Workflow</button></li>
-                        <li><button onclick="loadDoc('BACKEND_WORKFLOW.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn" data-file="BACKEND_WORKFLOW.md">Backend Workflow</button></li>
-                        <li><button onclick="loadDoc('DEBUG_WORKFLOW.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn" data-file="DEBUG_WORKFLOW.md">Debug Workflow</button></li>
+                        <li><button onclick="loadDoc('UI_WORKFLOW.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">UI Workflow</button></li>
+                        <li><button onclick="loadDoc('BACKEND_WORKFLOW.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">Backend Workflow</button></li>
+                        <li><button onclick="loadDoc('DEBUG_WORKFLOW.md')" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">Debug Workflow</button></li>
                     </ul>
                 </div>
             </nav>
@@ -576,7 +576,7 @@ export async function createItem(formData: FormData) {
                 return;
             }
 
-            const rawMarkdown = element.textContent.trim();
+            const rawMarkdown = element.innerText || element.textContent;
             const contentDiv = document.getElementById('content');
             const breadcrumb = document.getElementById('breadcrumb');
             const mainScroll = document.getElementById('main-scroll');
@@ -585,14 +585,14 @@ export async function createItem(formData: FormData) {
             breadcrumb.textContent = `VIBES / ${filename.replace('.md', '')}`;
 
             // Render Markdown
-            contentDiv.innerHTML = marked.parse(rawMarkdown);
+            contentDiv.innerHTML = marked.parse(rawMarkdown.trim());
             
             // Re-highlight code blocks
             Prism.highlightAll();
 
             // Active state styling
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                if(btn.dataset.file === filename) {
+                if(btn.getAttribute('onclick').includes(filename)) {
                     btn.classList.add('text-white', 'bg-white/10');
                     btn.classList.remove('text-gray-400');
                 } else {
