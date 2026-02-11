@@ -592,7 +592,7 @@ export async function createItem(formData: FormData) {
 
             // Active state styling
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                if(btn.dataset.file === filename) {
+                if(btn.getAttribute("data-file") === filename) {
                     btn.classList.add('text-white', 'bg-white/10');
                     btn.classList.remove('text-gray-400');
                 } else {
