@@ -86,18 +86,130 @@
                               linear-gradient(to bottom, #111 1px, transparent 1px);
             mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
         }
+        
+        /* Mobile Sidebar Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            z-index: 25;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Mobile Sidebar */
+        aside {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @media (max-width: 768px) {
+            aside {
+                position: fixed;
+                left: 0;
+                top: 48px;
+                height: calc(100vh - 48px);
+                transform: translateX(-100%);
+                z-index: 30;
+                width: 280px;
+            }
+            
+            aside.open {
+                transform: translateX(0);
+            }
+            
+            .mobile-header {
+                display: flex !important;
+            }
+            
+            /* Mobile content adjustments */
+            main > div {
+                padding-left: 1rem;
+                padding-right: 1rem;
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+            
+            /* Mobile typography */
+            .prose h1 {
+                font-size: 1.75rem;
+                margin-bottom: 1rem;
+            }
+            
+            .prose h2 {
+                font-size: 1.375rem;
+                margin-top: 2rem;
+            }
+            
+            .prose h3 {
+                font-size: 1.125rem;
+            }
+            
+            .prose pre {
+                padding: 0.875rem;
+                font-size: 0.8125rem;
+            }
+            
+            .prose table {
+                font-size: 0.8125rem;
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            
+            /* Prevent body scroll when menu is open */
+            body.menu-open {
+                overflow: hidden;
+            }
+        }
+        
+        /* Hamburger menu animation */
+        .hamburger-line {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .hamburger.active .hamburger-line:nth-child(1) {
+            transform: translateY(6px) rotate(45deg);
+        }
+        
+        .hamburger.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active .hamburger-line:nth-child(3) {
+            transform: translateY(-6px) rotate(-45deg);
+        }
     </style>
 </head>
 <body class="bg-black text-gray-200 h-screen w-screen overflow-hidden flex flex-col selection:bg-white selection:text-black">
 
     <!-- Header / Marquee -->
     <header class="h-12 border-b border-white/10 flex items-center bg-black/50 backdrop-blur-md z-50 overflow-hidden relative">
+        <!-- Mobile Hamburger Menu (Left) -->
+        <button id="menu-toggle" class="mobile-header hidden absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 -ml-2 hamburger" aria-label="Toggle menu" aria-expanded="false">
+            <div class="w-5 h-4 flex flex-col justify-between">
+                <span class="hamburger-line w-full h-0.5 bg-white rounded-full origin-center"></span>
+                <span class="hamburger-line w-full h-0.5 bg-white rounded-full origin-center"></span>
+                <span class="hamburger-line w-full h-0.5 bg-white rounded-full origin-center"></span>
+            </div>
+        </button>
+        
+        <!-- Marquee -->
         <div class="absolute inset-0 flex items-center whitespace-nowrap animate-marquee font-mono text-xs tracking-widest text-gray-500 uppercase select-none">
             VIBES CODING GUIDE v3.0 // ARCHITECT YOUR INTENT // SOFTWARE 3.0 // NO HALLUCINATIONS // VIBES CODING GUIDE v3.0 // ARCHITECT YOUR INTENT // SOFTWARE 3.0 // NO HALLUCINATIONS //
         </div>
         <div class="absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-black to-transparent z-10"></div>
         <div class="absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-black to-transparent z-10"></div>
     </header>
+
+    <!-- Mobile Overlay -->
+    <div id="sidebar-overlay" class="sidebar-overlay md:hidden" onclick="closeMobileMenu()"></div>
 
     <div class="flex flex-1 overflow-hidden relative">
         <!-- Background Grid -->
@@ -1306,6 +1418,55 @@ export async function createItem(formData: FormData) {
             console.warn("Lenis failed to initialize:", e);
         }
 
+        // Mobile Menu Toggle Logic
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.querySelector('aside');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        const body = document.body;
+        
+        function openMobileMenu() {
+            sidebar.classList.add('open');
+            sidebarOverlay.classList.add('active');
+            menuToggle.classList.add('active');
+            menuToggle.setAttribute('aria-expanded', 'true');
+            body.classList.add('menu-open');
+        }
+        
+        function closeMobileMenu() {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('active');
+            menuToggle.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            body.classList.remove('menu-open');
+        }
+        
+        function toggleMobileMenu() {
+            if (sidebar.classList.contains('open')) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        }
+        
+        // Attach toggle handler
+        if (menuToggle) {
+            menuToggle.addEventListener('click', toggleMobileMenu);
+        }
+        
+        // Close menu on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+                closeMobileMenu();
+            }
+        });
+        
+        // Close menu on window resize to desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768 && sidebar.classList.contains('open')) {
+                closeMobileMenu();
+            }
+        });
+
         // Markdown Loading Logic
         function loadDoc(filename) {
             const scriptId = `md-${filename}`;
@@ -1360,6 +1521,11 @@ export async function createItem(formData: FormData) {
 
             // Scroll to top
             mainScroll.scrollTop = 0;
+            
+            // Close mobile menu if open
+            if (window.innerWidth < 768 && sidebar.classList.contains('open')) {
+                closeMobileMenu();
+            }
         }
 
         // Initialize with README or Hash
