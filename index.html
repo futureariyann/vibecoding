@@ -127,20 +127,31 @@
                     <ul class="space-y-1">
                         <li><button onclick="loadDoc('PROMPT_ENGINEERING.md')" data-file="PROMPT_ENGINEERING.md" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">Prompt Engineering</button></li>
                         <li><button onclick="loadDoc('SECURITY_GUIDE.md')" data-file="SECURITY_GUIDE.md" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">Security & Safety</button></li>
+                        <li><button onclick="loadDoc('TROUBLESHOOTING.md')" data-file="TROUBLESHOOTING.md" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">Troubleshooting</button></li>
                     </ul>
                 </div>
 
                 <!-- Group 3 -->
                 <div>
+                    <h3 class="text-xs font-mono font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">Scaling & Migration</h3>
+                    <ul class="space-y-1">
+                        <li><button onclick="loadDoc('TEAM_SCALING.md')" data-file="TEAM_SCALING.md" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">Vibe Coding for Teams</button></li>
+                        <li><button onclick="loadDoc('MIGRATION_GUIDE.md')" data-file="MIGRATION_GUIDE.md" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">Migration Guide</button></li>
+                    </ul>
+                </div>
+
+                <!-- Group 4 -->
+                <div>
                     <h3 class="text-xs font-mono font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">The System</h3>
                     <ul class="space-y-1">
+                        <li><button onclick="loadDoc('TOOL_STACK.md')" data-file="TOOL_STACK.md" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">The 2026 AI Tool Stack</button></li>
                         <li><button onclick="loadDoc('AGENT.md')" data-file="AGENT.md" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">AGENT.md (Router)</button></li>
                         <li><button onclick="loadDoc('SKILL.md')" data-file="SKILL.md" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">SKILL.md (Stack)</button></li>
                         <li><button onclick="loadDoc('PROJECT_STATUS.md')" data-file="PROJECT_STATUS.md" class="w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-white/5 hover:text-white transition-colors text-gray-400 nav-btn">PROJECT_STATUS.md</button></li>
                     </ul>
                 </div>
 
-                <!-- Group 4 -->
+                <!-- Group 5 -->
                 <div>
                     <h3 class="text-xs font-mono font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">SOPs / Control Plane</h3>
                     <ul class="space-y-1">
@@ -188,6 +199,10 @@ vibes-coding-guide/
 ├── QUICK_START.md          # 🆕 Get running in 30 minutes.
 ├── PROMPT_ENGINEERING.md    # 🆕 Master the art of prompting.
 ├── SECURITY_GUIDE.md       # 🆕 Stay safe in the AI era.
+├── TEAM_SCALING.md         # 🆕 Manage AI in teams.
+├── MIGRATION_GUIDE.md       # 🆕 Transform legacy codebases.
+├── TROUBLESHOOTING.md      # 🆕 Fix common AI issues.
+├── TOOL_STACK.md           # 🆕 Comparison of 2026 tools.
 ├── AGENT.md                # The CEO: The main router that directs the AI to the right SOP.
 ├── SKILL.md                # The Knowledge Base: The tech stack and core recipes.
 ├── PROJECT_STATUS.md       # The Memory: Persistent context of the project's state.
@@ -449,6 +464,233 @@ AI might "hallucinate" a library that doesn't exist or recommend an old, insecur
 ---
 
 > **Stay Safe:** Speed is good, but security is better. Always follow the **Vibe Safety Protocol**. 🛡️</script>
+
+    <script type="text/markdown" id="md-TEAM_SCALING.md"># 👥 Vibe Coding for Teams
+
+Scaling vibe coding to a team requires more than just sharing a repo. It requires a **Control Plane** — a corporate-like structure where everyone (humans and AI) knows their role.
+
+---
+
+## 🏢 1. The Corporate Hierarchy
+
+For large-scale projects, we structure our context files like a company:
+
+-   **CEO (`AGENT.md`)**: The main "Router". It sets the mission and directs the AI to specific SOPs.
+-   **Managers (`.vibes/control/`)**: Specialized rules for Security, UI, and Backend.
+-   **Workers (`.vibes/sop/`)**: Step-by-step Standard Operating Procedures for specific tasks.
+-   **Archive (`.vibes/memory/`)**: Immutable facts, tech stack decisions, and past lessons.
+
+---
+
+## 🌿 2. Git Workflow with AI
+
+AI can be messy with commits. Follow this protocol to keep your history clean:
+
+1.  **Isolated Branches:** One feature = one branch. Never let the AI build two things at once in the same branch.
+2.  **Conventional Commits:** Enforce the use of `feat:`, `fix:`, and `refactor:`.
+3.  **The "Check then Commit" Rule:** Never let the AI auto-commit without your approval. Always run a `git diff` first.
+
+---
+
+## 🤝 3. Collaboration Patterns
+
+### Shared vs. Personal Rules
+-   **`AGENT.md`**: Should be committed to Git. This contains the "Team Rules".
+-   **`.vibes/local.md`**: (Optional) Put your personal shortcuts here and add it to `.gitignore`.
+
+### Code Review Checklist for AI Code
+When reviewing an AI-generated PR, look for:
+-   **Ghost Dependencies:** Did the AI add a library without updating `package.json`?
+-   **Zombie Code:** Are there unused functions left behind after a refactor?
+-   **Context Leak:** Did the AI accidentally include local paths or secrets?
+
+---
+
+## 📈 4. Scaling Architecture
+
+Loosely coupled systems work best with AI.
+-   **Small Files:** Aim for <200 lines. AI gets confused by giant files.
+-   **Strict Interfaces:** Use TypeScript `interface` for every component. This gives the AI a "contract" to follow.
+-   **Feature Folders:** Keep logic, types, and components for one feature in a single folder.
+
+---
+
+> **Key Takeaway:** In a team, you are no longer just a coder. You are an **Engineer Manager** for your AI agents. 🚀</script>
+
+    <script type="text/markdown" id="md-MIGRATION_GUIDE.md"># 🏗️ Migrating to Vibe Coding
+
+Moving an existing project to a vibe coding workflow doesn't happen overnight. It's a journey from **Manual Implementation** to **Intent Management**.
+
+---
+
+## 🔍 1. The Assessment
+
+Before you start, ask these questions about your codebase:
+-   **Is it typed?** If you use JavaScript, migrate to TypeScript first. AI needs types to understand "shapes."
+-   **Is it modular?** If you have 2000-line files, the AI will hallucinate.
+-   **Are there tests?** You need a safety net to know if the AI broke something.
+
+---
+
+## 🪜 2. The Gradual Migration Strategy
+
+### Step 1: Document the Vibe
+Create your `AGENT.md` and `SKILL.md` based on your **current** stack. Don't try to change the stack yet.
+
+### Step 2: Documentation First
+Ask the AI to read your core files and generate READMEs or JSDoc comments. This "trains" the AI on your specific patterns.
+
+### Step 3: Start with New Features
+Build all *new* features using the Vibe Coding loop. Leave the old code alone for now.
+
+### Step 4: The "Bite-Sized" Refactor
+Pick one messy component. Ask the AI: "Read this component and suggest a plan to split it into three smaller files. Do not change the logic yet."
+
+---
+
+## 🛠️ 3. Refactoring Patterns
+
+| Pattern | Goal | AI Prompt Example |
+| :--- | :--- | :--- |
+| **Logic Extraction** | Move business logic out of UI files. | "Move the form validation logic from `Signup.tsx` into a new `useSignup.ts` hook." |
+| **Type Hardening** | Replace `any` with strict types. | "Read `api.ts`. Replace all `any` types with interfaces based on the actual data returned." |
+| **Boilerplate Kill** | Move repetitive code to helpers. | "I see the same error handling in 5 files. Create a shared `errorHandler` utility and update the files." |
+
+---
+
+## 📖 4. Case Study: Legacy React to Modern Next.js
+
+**Old State:** React Class Components, Redux, Inline CSS.
+**Goal:** Next.js Server Components, Tailwind, URL state.
+
+**The Workflow:**
+1.  **Read Class:** Agent reads `UserList.class.js`.
+2.  **Define Interface:** Agent creates `UserList.types.ts`.
+3.  **Build Functional:** Agent writes `UserList.tsx` using Tailwind.
+4.  **Verify:** Run them side-by-side to ensure UI parity.
+
+---
+
+> **Pro Tip:** Don't migrate everything at once. **Migrate the intent, then the syntax.** 🚀</script>
+
+    <script type="text/markdown" id="md-TROUBLESHOOTING.md"># 🔍 Troubleshooting & Optimization
+
+Vibe coding isn't magic. Sometimes the AI gets stuck, loops, or writes "creative" but broken code. Here is how to fix the vibe.
+
+---
+
+## 👻 1. AI Hallucination Recovery
+
+### Detecting the "Hallucination"
+-   AI suggests a library that doesn't exist.
+-   AI uses a function from a different version of your stack.
+-   AI keeps making the same mistake after you've corrected it.
+
+### The Recovery Protocol
+1.  **Stop the Loop:** If the AI fails twice, do not try a third time.
+2.  **Clean the Context:** Type `/clear` or start a new session.
+3.  **Feed the Source:** Go find the actual documentation or code snippet. Paste it and say: "This is the correct way to do it. Use this pattern."
+
+---
+
+## 🔧 2. Common Errors & Solutions
+
+### "I don't have enough context"
+-   **Cause:** You haven't opened the relevant files.
+-   **Fix:** Specifically tell it: "Read `schema.ts` and `auth.ts` first."
+
+### "This change might break existing code"
+-   **Cause:** AI is being too conservative or sees a conflict.
+-   **Fix:** Ask for a **Plan Mode** analysis first. "Analyze the impact of this change and list all affected files."
+
+### Infinite Generation Loop
+-   **Cause:** The task is too big or the logic is circular.
+-   **Fix:** Break the prompt into 3 smaller tasks.
+
+---
+
+## ⚡️ 3. Token & Performance Optimization
+
+AI performance drops as the chat history grows.
+
+-   **Short Sessions:** One feature = One chat session.
+-   **Atomic Prompts:** Instead of "Build the whole page," say "Build the Header component."
+-   **Use @-Mentions:** Use `@filename` to give the AI only the specific files it needs.
+
+---
+
+## 🛑 4. When to Go Manual
+
+Vibe coding is for **90% of the work**. The last 10% sometimes needs a human touch:
+
+-   **Complex Math/Algorithms:** AI is bad at complex math logic.
+-   **Novel Architectures:** If you're building something that has never been done before.
+-   **Performance-Critical Code:** Tight loops or low-level memory management.
+
+---
+
+> **The Golden Rule:** If you spend more than 10 minutes trying to prompt a fix, **fix it manually**, show the AI the result, and move on. 🚀</script>
+
+    <script type="text/markdown" id="md-TOOL_STACK.md"># 🛠️ The 2026 AI Tool Stack
+
+In 2026, the choice of tool determines your velocity. Here is a comparison of the top AI coding tools and how to set them up.
+
+---
+
+## 📊 Comparison Matrix
+
+| Tool | Best For | Interface | Core Strength |
+| :--- | :--- | :--- | :--- |
+| **OpenCode** | Open Source / Flexibilty | TUI / App / IDE | Multi-agent teams & MCP support. |
+| **Cursor** | High-Velocity Prototyping | Integrated IDE | The "Composer" mode is best-in-class for UI. |
+| **Claude Code** | Terminal Power Users | CLI | Extremely low hallucination rate. |
+| **GitHub Copilot** | Enterprise / Stable | IDE Extension | Deep integration with GitHub Actions & PRs. |
+
+---
+
+## ⚙️ 1. OpenCode Setup (Recommended)
+
+OpenCode is the most flexible tool for **Vibe Coding**.
+
+1.  **Install:** `npm install -g opencode-ai`
+2.  **Config:** Open `opencode.json` in your project root.
+3.  **Load AGENTS.md:** Add `"instructions": ["AGENTS.md"]` to the config.
+4.  **MCPs:** Add your database or search MCPs to give the AI real-world access.
+
+---
+
+## ⚙️ 2. Cursor Setup
+
+Cursor is an AI-native fork of VS Code.
+
+1.  **Download:** [cursor.sh](https://cursor.com).
+2.  **Rules:** Create a `.cursorrules` file (or use `AGENTS.md`).
+3.  **Indexing:** Ensure your project is fully indexed (Settings > Features > Indexing).
+4.  **Composer:** Press `Cmd+I` to start a multi-file vibe session.
+
+---
+
+## ⚙️ 3. Claude Code Setup
+
+The new terminal agent from Anthropic.
+
+1.  **Install:** `npm install -g @anthropic-ai/claude-code`
+2.  **Auth:** `claude auth`
+3.  **Run:** Type `claude` in your project folder.
+4.  **SOPs:** Tell it to "Always read `CLAUDE.md`" (our equivalent to `AGENT.md`).
+
+---
+
+## 🧠 Which one should you choose?
+
+-   **Solo Dev / UI Focus:** Use **Cursor**.
+-   **Backend / Team Focus:** Use **OpenCode**.
+-   **Scripting / Terminal:** Use **Claude Code**.
+-   **Corporate Security:** Use **GitHub Copilot**.
+
+---
+
+> **Vibe Tip:** All these tools support the **AGENTS.md** standard. Write your rules once, use them everywhere. 🚀</script>
 
     <script type="text/markdown" id="md-ARTICLE.md"># 🚀 Vibes Coding: The 2026 Architect's Manifesto
 
