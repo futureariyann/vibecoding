@@ -601,13 +601,23 @@ export async function createItem(formData: FormData) {
                 }
             });
 
+            // Update Hash
+            window.location.hash = filename;
+
             // Scroll to top
             mainScroll.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Initialize with README
+        // Initialize with README or Hash
         document.addEventListener('DOMContentLoaded', () => {
-            loadDoc('README.md');
+            const initialFile = window.location.hash.replace('#', '') || 'README.md';
+            loadDoc(initialFile);
+        });
+
+        // Handle back/forward navigation
+        window.addEventListener('hashchange', () => {
+            const file = window.location.hash.replace('#', '');
+            if (file) loadDoc(file);
         });
     </script>
 </body>
